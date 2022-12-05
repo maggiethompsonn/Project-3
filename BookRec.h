@@ -6,9 +6,10 @@
 #define PROJECT_3_BOOKREC_H
 #include <string>
 #include <vector>
-#include <unordered_map>
+#include <fstream>
+#include <stdexcept> // std::runtime_error
+#include <sstream> // std::stringstream
 using namespace std;
-
 
 class BookRec {
 private:
@@ -18,7 +19,7 @@ private:
         int pages, points = 0, likePercent;
         double rating, price;
     };
-    unordered_map<string, Book> bookList;
+    vector<Book> bookList;
 public:
     void readCSV(const string& filename);
     void genrePoints(const string& genre, int numPoints);
