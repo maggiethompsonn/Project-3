@@ -13,9 +13,9 @@ using namespace std;
 class BookRec {
 private:
     struct Book {
-        string title, author, series, description, publisher, pubDate;
-        vector<string> genres, awards;
-        int numPages, points = 0;
+        string title, author, series, publisher, img, pubYear;
+        vector<string> genres, awards, setting;
+        int pages, points = 0, likePercent;
         double rating, price;
     };
     unordered_map<string, Book> bookList;
