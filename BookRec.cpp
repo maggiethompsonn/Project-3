@@ -3,11 +3,11 @@
 //
 #include <stdexcept> // std::runtime_error
 #include <sstream> // std::stringstream
-#include "BookRec.h"
+#include "SongRec.h"
 #include <iostream>
 using namespace std;
 
-void BookRec::readCSV(const string& filename) {
+void SongRec::readCSV(const string& filename) {
     //create file stream
     ifstream myFile(filename);
 
@@ -18,6 +18,7 @@ void BookRec::readCSV(const string& filename) {
     string line;
     getline(myFile, line);
 
+    int count = 0;
     //read in the rest of the data line by line
     while(getline(myFile, line)) {
 
@@ -25,130 +26,154 @@ void BookRec::readCSV(const string& filename) {
         istringstream ss(line);
 
         //create temps and storage for each variable
-        string ID, author, series, title, rating, isbn, genres, pages, pub, pubDate, awards, likePercent, setting, img, price;
-        double _rating, _price;
-        int pubYear, _likePercent, _pages;
-        vector<string> _genres, _awards, _setting;
+        string track, artist, uri, danceability, energy, loudness, mode, speechiness, acousticness,
+                valence, tempo, duration, target, decade;
+        double _danceability, _energy, _loudness, _mode, _speechiness, _acousticness;
+        double _valence, _tempo, _duration, _target, _decade;
+
 
         //read in each column as a string
-        getline(ss, ID, '~');
-        getline(ss, title, '~');
-        getline(ss, series, '~');
-        getline(ss, author, '~');
-        getline(ss, rating, '~');
-        getline(ss, isbn, '~');
-        getline(ss, genres, '~');
-        getline(ss, pages, '~');
-        getline(ss, pub, '~');
-        getline(ss, pubDate, '~');
-        getline(ss, awards, '~');
-        getline(ss, likePercent, '~');
-        getline(ss, setting, '~');
-        getline(ss, img, '~');
-        getline(ss, price, '~');
+        getline(ss, track, ',');
+        getline(ss, artist, ',');
+        getline(ss, uri, ',');
+        getline(ss, danceability, ',');
+        getline(ss, energy, ',');
+        getline(ss, loudness, ',');
+        getline(ss, mode, ',');
+        getline(ss, speechiness, ',');
+        getline(ss, acousticness, ',');
+        getline(ss, valence, ',');
+        getline(ss, tempo, ',');
+        getline(ss, duration, ',');
+        getline(ss, target, ',');
+        getline(ss, decade, ',');
 
         //convert string types to their expected type and add to book struct
-        Book newBook;
+        Song newSong;
         //add the strings: title, series, author, pub, img, pubYear
-        newBook.title = title;
-        newBook.series = series;
-        newBook.author = author;
-        newBook.publisher = pub;
-        newBook.img = img;
-        if (!pubDate.empty()) {
-            string year = pubDate.substr(pubDate.length() - 4);
-            newBook.pubYear = year;
-        }
-        else {
-            newBook.pubYear = "N/A";
-        }
+        newSong.track = track;
+        newSong.artist = artist;
+        newSong.uri = uri;
 
         //add the doubles: rating, price
-        _rating = atof(rating.c_str());
-        newBook.rating = _rating;
-        _price = atof(price.c_str());
-        newBook.price = _price;
-
-        //add vectors: genres, awards, setting
-        istringstream ss2(genres);
-        string temp;
-        while(getline(ss2,temp, ',')) {
-            if (temp.substr(0,1) == " ") {
-                temp = temp.substr(1);
-            }
-            _genres.push_back(temp);
-        }
-        newBook.genres = _genres;
-        istringstream ss3(awards);
-        while(getline(ss3,temp, ',')) {
-            if (temp.substr(0,1) == " ") {
-                temp = temp.substr(1);
-            }
-            _awards.push_back(temp);
-        }
-        newBook.awards = _awards;
-        istringstream ss4(setting);
-        while(getline(ss4,temp, '\'')) {
-            if (temp.substr(0,2) == ", ") {
-                continue;
-            }
-            _setting.push_back(temp);
-        }
-        newBook.setting = _setting;
-
-        //add integers: pages, like percent
-        if (!pages.empty()) {
-            _pages = stoi(pages);
-            newBook.pages = _pages;
-        }
-        else {
-            newBook.pages = 0;
-        }
-        if (!likePercent.empty()) {
-            _likePercent = stoi(likePercent);
-            newBook.likePercent = _likePercent;
-        }
-        else {
-            newBook.likePercent = 0;
-        }
+        _danceability = atof(danceability.c_str());
+        newSong.danceability = _danceability;
+        _energy = atof(energy.c_str());
+        newSong.energy = _energy;
+        _loudness = atof(loudness.c_str());
+        newSong.loudness = _loudness;
+        _mode = atof(mode.c_str());
+        newSong.mode = _mode;
+        _speechiness = atof(speechiness.c_str());
+        newSong.speechiness = _speechiness;
+        _acousticness = atof(acousticness.c_str());
+        newSong.acousticness = _acousticness;
+        _valence = atof(valence.c_str());
+        newSong.valence = _valence;
+        _tempo = atof(tempo.c_str());
+        newSong.tempo = _tempo;
+        _duration = atof(duration.c_str());
+        newSong.duration = _duration;
+        _target = atof(target.c_str());
+        newSong.target = _target;
+        _decade = atof(decade.c_str());
+        newSong.decade = _decade;
 
         //add the new book to the vector
-        bookList.push_back(newBook);
+        newSong.points = 100000000 - count; //debugging for sorts
+        songList.push_back(newSong);
+        count++;
     }
 }
 
-void BookRec::genrePoints(const string& genre, int numPoints) {
+void SongRec::genrePoints(const string& genre, int numPoints) {
 
 }
 
-void BookRec::authorPoints(const string& genre, int numPoints) {
+void SongRec::authorPoints(const string& genre, int numPoints) {
 
 }
 
-void BookRec::numPagesPoints(string numPages, int numPoints) {
+void SongRec::numPagesPoints(string numPages, int numPoints) {
 
 }
 
-void BookRec::awardWinningPoints(bool award, int numPoints) {
+void SongRec::awardWinningPoints(bool award, int numPoints) {
 
 }
 
-void BookRec::publisherPoints(string publisher, int numPoints) {
+void SongRec::publisherPoints(string publisher, int numPoints) {
 
 }
 
-void BookRec::publishDatePoints(string date, int numPoints) {
+void SongRec::publishDatePoints(string date, int numPoints) {
 
 }
 
-void BookRec::mergeSort() {
+int SongRec::listLength() {
+    return songList.size();
+}
+
+void SongRec::mergeSort(int start, int end) {
+    if (start < end) {
+        int mid = start + (end - start) / 2;
+        mergeSort(start, mid);
+        mergeSort(mid + 1, end);
+        merge(start, mid, end);
+    }
+}
+
+void SongRec::merge(int start, int mid, int end) {
+    //get size of left and right portion to merge
+    int size1 = mid - start + 1;
+    int size2 = end - mid;
+
+    //create containers for left and right sides;
+    Song leftArr[size1], rightArr[size2];
+
+    //load the left vector and right vector with corresponding points
+    for (int i = 0; i < size1; i++) {
+        leftArr[i] = songList.at(start + i);
+    }
+    for (int j = 0; j < size2; j++) {
+        rightArr[j] = songList.at(mid + 1 + j);
+    }
+
+    //make new counter variables
+    int i = 0, j = 0, k = start;
+
+    //complete comparisons to put in order
+    while (i < size1 && j < size2) {
+        if (leftArr[i].points <= rightArr[j].points) {
+            songList.at(k) = leftArr[i];
+            i++;
+        }
+        else {
+            songList.at(k) = rightArr[j];
+            j++;
+        }
+        k++;
+    }
+
+    //put changes into bookList from left side
+    while (i < size1) {
+        songList.at(k) = leftArr[i];
+        i++;
+        k++;
+    }
+
+    //put changes into bookList from the right side
+    while (j < size2) {
+        songList.at(k) = rightArr[j];
+        j++;
+        k++;
+    }
+}
+
+void SongRec::quickSort() {
 
 }
 
-void BookRec::quickSort() {
-
-}
-
-void BookRec::printTopTen() {
+void SongRec::printTopTen() {
 
 }
