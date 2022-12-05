@@ -1,11 +1,14 @@
 //
 // Created by Jessica Halvorsen on 11/29/22.
 //
-
+#include <stdexcept> // std::runtime_error
+#include <sstream> // std::stringstream
 #include "BookRec.h"
+#include <iostream>
+using namespace std;
 
 void BookRec::readCSV(const string& filename) {
-  //create file stream
+    //create file stream
     ifstream myFile(filename);
 
     // Make sure the file is open
@@ -17,9 +20,10 @@ void BookRec::readCSV(const string& filename) {
 
     //read in the rest of the data line by line
     while(getline(myFile, line)) {
-        //create string stream of current line
+
+        //create string stream with the current line
         istringstream ss(line);
-       
+
         //create temps and storage for each variable
         string ID, author, series, title, rating, isbn, genres, pages, pub, pubDate, awards, likePercent, setting, img, price;
         double _rating, _price;
@@ -45,7 +49,6 @@ void BookRec::readCSV(const string& filename) {
 
         //convert string types to their expected type and add to book struct
         Book newBook;
-      
         //add the strings: title, series, author, pub, img, pubYear
         newBook.title = title;
         newBook.series = series;
@@ -109,8 +112,8 @@ void BookRec::readCSV(const string& filename) {
             newBook.likePercent = 0;
         }
 
-        //add to the map with ID as key and newBook as value
-        bookList[ID] = newBook;
+        //add the new book to the vector
+        bookList2.push_back(newBook);
     }
 }
 
