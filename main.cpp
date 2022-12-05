@@ -30,27 +30,26 @@ int main() {
     int thirdChoice = 0;
     int fourthChoice = 0;
     int fifthChoice = 0;
-    int temp = bookRank;
-    for(int i = 5; i >= 0; i--)
+    for(int i = 5; i > 0; i--)
     {
-        temp = temp / pow(10, 5 - i);
-        if(i == 0)
+        int temp = bookRank / pow(10, i - 5) % 10;
+        if(i == 1)
         {
             firstChoice = temp;
         }
-        if(i == 1)
+        if(i == 2)
         {
             secondChoice = temp;
         }
-        if(i == 2)
+        if(i == 3)
         {
             thirdChoice = temp;
         }
-        if(i == 3)
+        if(i == 4)
         {
             fourthChoice = temp;
         }
-        if(i == 4)
+        if(i == 5)
         {
             fifthChoice = temp;
         }
