@@ -11,15 +11,15 @@
 #include <sstream> // std::stringstream
 using namespace std;
 
-class BookRec {
+class SongRec {
 private:
-    struct Book {
-        string title, author, series, publisher, img, pubYear;
-        vector<string> genres, awards, setting;
-        int pages, points = 0, likePercent;
-        double rating, price;
+    struct Song {
+        string track, artist, uri;
+        double danceability, energy, loudness, mode, speechiness, acousticness;
+        double valence, tempo, duration, target, decade;
+        int points = 0;
     };
-    vector<Book> bookList;
+    vector<Song> songList;
 public:
     void readCSV(const string& filename);
     void genrePoints(const string& genre, int numPoints);
@@ -28,10 +28,12 @@ public:
     void awardWinningPoints(bool award, int numPoints);
     void publisherPoints(string publisher, int numPoints);
     void publishDatePoints(string date, int numPoints);
-    void mergeSort();
+    int listLength();
+    void mergeSort(int start, int end);
+    void merge(int start, int mid, int end);
     void quickSort();
     void printTopTen();
 };
 
 
-#endif //PROJECT_3_BOOKREC_H
+#endif //PROJECT_3_SONGREC_H
