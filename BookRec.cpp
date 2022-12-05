@@ -113,7 +113,7 @@ void BookRec::readCSV(const string& filename) {
         }
 
         //add the new book to the vector
-        bookList2.push_back(newBook);
+        bookList.push_back(newBook);
     }
 }
 
