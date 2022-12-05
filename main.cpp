@@ -3,12 +3,14 @@
 //
 #include <iostream>
 #include <string>
+#include <unordered_map>
+#include <cmath>
 #include "BookRec.h"
 using namespace std;
 
 int main() {
 
-    //1. read in csv file and create book struct
+    //1. read in csv file and create book struct 
     BookRec books;
     books.readCSV("books_please.csv");
 
@@ -21,7 +23,38 @@ int main() {
 
     cout << "Which factors are most important to you? (rank in order ex: 23145)" << endl;
     cout << "1. Genre \n2. Author \n3. Number of Pages \n4. Award-Winning \n5. Publish Date \n";
-
+    int bookRank = 0;
+    cin >> bookRank;
+    int firstChoice = 0;
+    int secondChoice = 0;
+    int thirdChoice = 0;
+    int fourthChoice = 0;
+    int fifthChoice = 0;
+    int temp = bookRank;
+    for(int i = 5; i >= 0; i--)
+    {
+        temp = temp / pow(10, 5 - i);
+        if(i == 0)
+        {
+            firstChoice = temp;
+        }
+        if(i == 1)
+        {
+            secondChoice = temp;
+        }
+        if(i == 2)
+        {
+            thirdChoice = temp;
+        }
+        if(i == 3)
+        {
+            fourthChoice = temp;
+        }
+        if(i == 4)
+        {
+            fifthChoice = temp;
+        }
+    }
 
     //4. based on their ranking, ask for their choices for each option
     //   and perform the associated method to add points to matching books
@@ -35,8 +68,6 @@ int main() {
         //published date: give ranges on year dates and ask them to select their range
 
     //5. return a list of the top 10 books for the user
-
-
 
 
     return 0;
