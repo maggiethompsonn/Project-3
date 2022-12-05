@@ -4,14 +4,15 @@
 //
 #include <iostream>
 #include <string>
-#include "BookRec.h"
+#include "SongRec.h"
 using namespace std;
 
 int main() {
 
     //1. read in csv file and create book struct
-    BookRec books;
-    books.readCSV("books_please.csv");
+    SongRec songs;
+    songs.readCSV("songs.csv");
+    //songs.mergeSort(0, songs.listLength() - 1);
 
     //2. welcome the user to the Book Worm's book recommender
     cout << "Welcome to the Book Worm Book Recommender!" << endl;
