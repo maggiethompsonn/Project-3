@@ -7,7 +7,7 @@
 #include <iostream>
 using namespace std;
 
-//TODO change delimiter- works up until ~1100 items 
+//reads in the CSV file and pushes back a new Song into songList for each line
 void SongRec::readCSV(const string& filename) {
     //create file stream
     ifstream myFile(filename);
@@ -20,17 +20,17 @@ void SongRec::readCSV(const string& filename) {
     getline(myFile, line);
 
     int count = 0;
-    //read in the rest of the data line by line
+    //read in all the data line by line
     while(getline(myFile, line)) {
 
         //create string stream with the current line
         istringstream ss(line);
 
-        //create temps to read in each variable
+        //create string temps to read in each variable
         string track, artist, uri, danceability, energy, loudness, mode, speechiness, acousticness,
                 valence, tempo, duration, target, decade;
 
-        //read in each column as a string
+        //read in each column using the | as the delimiter
         getline(ss, track, '|');
         getline(ss, artist, '|');
         getline(ss, uri, '|');
@@ -46,7 +46,7 @@ void SongRec::readCSV(const string& filename) {
         getline(ss, target, '|');
         getline(ss, decade, '|');
 
-        //convert string types to their expected type and add to book struct
+        //create a new song instance to store the current line's data
         Song newSong;
 
         //add the strings:
@@ -76,121 +76,67 @@ void SongRec::readCSV(const string& filename) {
     }
 }
 
-
+//allocates points for any Songs that match the danceability choice of user
 void SongRec::dancePoints(int choice, int numPoints) {
     //choice must be divided by 10 to match data
     double choiceDec = double(choice) / 10;
-    double min = choiceDec - 0.1;
-    double max = choiceDec + 0.1;
-
-    //iterate through songList and allocate max points for +- 0.1 from choice
-    //add 50% of points if +- 0.2 from choice
     for (Song& song : songList) {
-        if (song.danceability >= min && song.danceability <= max) {
-            song.points += numPoints;
-        }
-        else if (song.danceability >= min - 1 && song.danceability <= max + 1) {
-            song.points += numPoints / 2;
-        }
+        double diff = abs(choiceDec - song.danceability);
+        double minus = diff * numPoints;
+        song.points += numPoints - minus;
     }
 }
 
 void SongRec::energyPoints(int choice, int numPoints) {
-
+    //choice must be divided by 10 to match data
     double choiceDec = double(choice) / 10;
-    double min = choiceDec - 0.1;
-    double max = choiceDec + 0.1;
-
-
     for (Song& song : songList) {
-        if (song.energy >= min && song.energy <= max) {
-            song.energy += numPoints;
-        }
-        else if (song.energy >= min - 0.1 && song.energy <= max + 0.1) {
-            song.energy += numPoints / 2;
-        }
-    }
-}
-
-void SongRec::loudnessPoints(int choice, int numPoints) {
-    double choiceDec = double(choice);
-    double min = choiceDec - 6.0;
-    double max = choiceDec + 6.0;
-
-
-    for (Song& song : songList) {
-        if (song.loudness >= min && song.loudness <= max) {
-            song.loudness += numPoints;
-        }
-        else if (song.loudness >= min - 6.0 && song.loudness <= max + 6.0) {
-            song.loudness += numPoints / 2;
-        }
+        double diff = abs(choiceDec - song.energy);
+        double minus = diff * numPoints;
+        song.points += numPoints - minus;
     }
 }
 
 void SongRec::modePoints(string choice, int numPoints) {
-    double choiceDec;
+    int choiceInt;
     if (choice == "major")
-        choiceDec = 1.0;
+        choiceInt = 1;
     if (choice == "minor")
-        choiceDec = 0.0;
+        choiceInt = 0;
     for (Song& song : songList) {
-        if (song.mode != choiceDec) {
+        if (song.mode == choiceInt) {
             song.mode += numPoints;
         }
-        else if (song.mode == choiceDec) {
-            song.mode += numPoints / 2;
-        }
     }
-
 }
 
 void SongRec::acousticPoints(int choice, int numPoints) {
+    //choice must be divided by 10 to match data
     double choiceDec = double(choice) / 10;
-    double min = choiceDec - 0.1;
-    double max = choiceDec + 0.1;
-
-
     for (Song& song : songList) {
-        if (song.acousticness >= min && song.acousticness <= max) {
-            song.acousticness += numPoints;
-        }
-        else if (song.acousticness >= min - 0.1 && song.acousticness <= max + 0.1) {
-            song.acousticness += numPoints / 2;
-        }
+        double diff = abs(choiceDec - song.acousticness);
+        double minus = diff * numPoints;
+        song.points += numPoints - minus;
     }
 }
 
 void SongRec::valencePoints(int choice, int numPoints) {
+    //choice must be divided by 10 to match data
     double choiceDec = double(choice) / 10;
-    double min = choiceDec - 0.1;
-    double max = choiceDec + 0.1;
-
-
     for (Song& song : songList) {
-        if (song.valence >= min && song.valence <= max) {
-            song.valence += numPoints;
-        }
-        else if (song.valence >= min - 0.1 && song.valence <= max + 0.1) {
-            song.valence += numPoints / 2;
-        }
+        double diff = abs(choiceDec - song.valence);
+        double minus = diff * numPoints;
+        song.points += numPoints - minus;
     }
-
 }
 
 void SongRec::tempoPoints(int choice, int numPoints) {
-    double choiceDec = double(choice);
-    double min = choiceDec - 20.0;
-    double max = choiceDec + 20.0;
-
-
+    //choice must be multiplied by 20 to match data
+    double choiceDec = double(choice) * 20;
     for (Song& song : songList) {
-        if (song.tempo >= min && song.tempo <= max) {
-            song.tempo += numPoints;
-        }
-        else if (song.tempo >= min - 20.0 && song.tempo <= max + 20.0) {
-            song.tempo += numPoints / 2;
-        }
+        double diff = abs(choiceDec - song.tempo);
+        double minus = diff * numPoints;
+        song.points += numPoints - minus;
     }
 }
 
@@ -199,8 +145,10 @@ int SongRec::listLength() {
     return songList.size();
 }
 
+
 //used mygreatlearning.com as a resource, link below
 //https://www.mygreatlearning.com/blog/merge-sort/#:~:text=Pseudocode%20for%20MergeSort%201%20Declare%20left%20and%20right,we%20will%20call%20merge%20on%20the%202%20subproblems
+//uses merge sort algorithm to sort songs by points in descending order
 void SongRec::mergeSort(int start, int end) {
     if (start < end) {
         int mid = start + (end - start) / 2;
@@ -229,9 +177,9 @@ void SongRec::merge(int start, int mid, int end) {
     //make new counter variables
     int i = 0, j = 0, k = start;
 
-    //complete comparisons to put in order
+    //complete comparisons to put in descending order
     while (i < size1 && j < size2) {
-        if (leftArr[i].points <= rightArr[j].points) {
+        if (leftArr[i].points >= rightArr[j].points) {
             songList.at(k) = leftArr[i];
             i++;
         }
@@ -242,14 +190,14 @@ void SongRec::merge(int start, int mid, int end) {
         k++;
     }
 
-    //put changes into bookList from left side
+    //put leftover indexes from the left side into songList
     while (i < size1) {
         songList.at(k) = leftArr[i];
         i++;
         k++;
     }
 
-    //put changes into bookList from the right side
+    //put leftover indexes from the right side into songList
     while (j < size2) {
         songList.at(k) = rightArr[j];
         j++;
@@ -259,6 +207,7 @@ void SongRec::merge(int start, int mid, int end) {
 
 //used as a resource for quick sort, link below
 //https://www.geeksforgeeks.org/cpp-program-for-quicksort/
+//uses quickSort algorithm to sort songs by points in descending order
 int SongRec::quickSortHelp(int start, int end) {
     //pivot starts as the first element
     int pivot = songList.at(start).points;
@@ -267,7 +216,7 @@ int SongRec::quickSortHelp(int start, int end) {
     //find how many songs have points less than the pivot
     //this will be the starting position of the pivot
     for (int i = start + 1; i <= end; i++) {
-        if (songList.at(i).points <= pivot) {
+        if (songList.at(i).points >= pivot) {
             count++;
         }
     }
@@ -276,18 +225,18 @@ int SongRec::quickSortHelp(int start, int end) {
     int pivotIndex = start + count;
     swap(songList.at(pivotIndex), songList.at(start));
 
-    //move up and down until they cross each other and perform switches
+    //move 'up' and 'down' until they reach the pivot point
     int up = start, down = end;
     while (up < pivotIndex && down > pivotIndex) {
         //move up until it gets a value <= to the pivot value
-        while(songList.at(up).points <= pivot) {
+        while(songList.at(up).points >= pivot) {
             up++;
         }
         //move down until it gets a value > the pivot
-        while(songList.at(down).points > pivot) {
+        while(songList.at(down).points < pivot) {
             down--;
         }
-        //if up and down have not passed each other yet, swap up and down values
+        //if up and down have not reached the pivot yet, swap up and down values
         if (up < pivotIndex && down > pivotIndex) {
             swap(songList.at(up), songList.at(down));
             up++;
@@ -298,18 +247,23 @@ int SongRec::quickSortHelp(int start, int end) {
 }
 
 void SongRec::quickSort(int start, int end) {
+    //if start passes end, sorting is done
     if (start >= end) {
         return;
     }
 
-    int help = quickSortHelp(start, end);
+    //get the first pivot index and sort around it
+    int pivot = quickSortHelp(start, end);
     //sort the left side of pivot
-    quickSort(start, help - 1);
+    quickSort(start, pivot - 1);
     //sort the right side of pivot
-    quickSort(help + 1, end);
+    quickSort(pivot + 1, end);
 }
 
 //prints the top 10 song recommendations
 void SongRec::printTopTen() {
-
+    for (int i = 0; i < 20; i++) {
+        cout << songList.at(i).track << endl;
+    }
 }
+
