@@ -1,6 +1,6 @@
 //
 
-// Created by Jessica Halvorsen on 11/29/22.
+// Created by Jessica Halvorsen, Maggie Thompson, and Robert Noble on 12/01/22.
 //
 #include <iostream>
 #include <string>
