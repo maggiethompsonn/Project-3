@@ -76,8 +76,9 @@ void SongRec::readCSV(const string& filename) {
     }
 }
 
+
 void SongRec::dancePoints(int choice, int numPoints) {
-    //choice must be divided by 10 to match data 
+    //choice must be divided by 10 to match data
     double choiceDec = double(choice) / 10;
     double min = choiceDec - 0.1;
     double max = choiceDec + 0.1;
@@ -96,26 +97,101 @@ void SongRec::dancePoints(int choice, int numPoints) {
 
 void SongRec::energyPoints(int choice, int numPoints) {
 
+    double choiceDec = double(choice) / 10;
+    double min = choiceDec - 0.1;
+    double max = choiceDec + 0.1;
+
+
+    for (Song& song : songList) {
+        if (song.energy >= min && song.energy <= max) {
+            song.energy += numPoints;
+        }
+        else if (song.energy >= min - 0.1 && song.energy <= max + 0.1) {
+            song.energy += numPoints / 2;
+        }
+    }
 }
 
 void SongRec::loudnessPoints(int choice, int numPoints) {
+    double choiceDec = double(choice);
+    double min = choiceDec - 6.0;
+    double max = choiceDec + 6.0;
 
+
+    for (Song& song : songList) {
+        if (song.loudness >= min && song.loudness <= max) {
+            song.loudness += numPoints;
+        }
+        else if (song.loudness >= min - 6.0 && song.loudness <= max + 6.0) {
+            song.loudness += numPoints / 2;
+        }
+    }
 }
 
 void SongRec::modePoints(string choice, int numPoints) {
+    double choiceDec;
+    if (choice == "major")
+        choiceDec = 1.0;
+    if (choice == "minor")
+        choiceDec = 0.0;
+    for (Song& song : songList) {
+        if (song.mode != choiceDec) {
+            song.mode += numPoints;
+        }
+        else if (song.mode == choiceDec) {
+            song.mode += numPoints / 2;
+        }
+    }
 
 }
 
 void SongRec::acousticPoints(int choice, int numPoints) {
+    double choiceDec = double(choice) / 10;
+    double min = choiceDec - 0.1;
+    double max = choiceDec + 0.1;
 
+
+    for (Song& song : songList) {
+        if (song.acousticness >= min && song.acousticness <= max) {
+            song.acousticness += numPoints;
+        }
+        else if (song.acousticness >= min - 0.1 && song.acousticness <= max + 0.1) {
+            song.acousticness += numPoints / 2;
+        }
+    }
 }
 
 void SongRec::valencePoints(int choice, int numPoints) {
+    double choiceDec = double(choice) / 10;
+    double min = choiceDec - 0.1;
+    double max = choiceDec + 0.1;
+
+
+    for (Song& song : songList) {
+        if (song.valence >= min && song.valence <= max) {
+            song.valence += numPoints;
+        }
+        else if (song.valence >= min - 0.1 && song.valence <= max + 0.1) {
+            song.valence += numPoints / 2;
+        }
+    }
 
 }
 
 void SongRec::tempoPoints(int choice, int numPoints) {
+    double choiceDec = double(choice);
+    double min = choiceDec - 20.0;
+    double max = choiceDec + 20.0;
 
+
+    for (Song& song : songList) {
+        if (song.tempo >= min && song.tempo <= max) {
+            song.tempo += numPoints;
+        }
+        else if (song.tempo >= min - 20.0 && song.tempo <= max + 20.0) {
+            song.tempo += numPoints / 2;
+        }
+    }
 }
 
 //returns the length of songList
