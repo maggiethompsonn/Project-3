@@ -11,7 +11,7 @@ int main() {
 
     //1. read in csv file and create book struct
     SongRec songs;
-    songs.readCSV("songs.csv");
+    songs.readCSV("songs_good.csv");
     //songs.mergeSort(0, songs.listLength() - 1);
 
     //2. welcome the user to the Book Worm's book recommender
