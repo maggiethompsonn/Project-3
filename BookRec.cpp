@@ -1,5 +1,5 @@
 //
-// Created by Jessica Halvorsen on 11/29/22.
+// Created by Jessica Halvorsen, Maggie Thompson, and Robert Noble on 12/01/22.
 //
 #include <stdexcept> // std::runtime_error
 #include <sstream> // std::stringstream
@@ -7,6 +7,7 @@
 #include <iostream>
 using namespace std;
 
+//TODO change delimiter- works up until ~1100 items 
 void SongRec::readCSV(const string& filename) {
     //create file stream
     ifstream myFile(filename);
@@ -25,12 +26,9 @@ void SongRec::readCSV(const string& filename) {
         //create string stream with the current line
         istringstream ss(line);
 
-        //create temps and storage for each variable
+        //create temps to read in each variable
         string track, artist, uri, danceability, energy, loudness, mode, speechiness, acousticness,
                 valence, tempo, duration, target, decade;
-        double _danceability, _energy, _loudness, _mode, _speechiness, _acousticness;
-        double _valence, _tempo, _duration, _target, _decade;
-
 
         //read in each column as a string
         getline(ss, track, ',');
@@ -50,70 +48,83 @@ void SongRec::readCSV(const string& filename) {
 
         //convert string types to their expected type and add to book struct
         Song newSong;
-        //add the strings: title, series, author, pub, img, pubYear
+
+        //add the strings:
         newSong.track = track;
         newSong.artist = artist;
         newSong.uri = uri;
 
-        //add the doubles: rating, price
-        _danceability = atof(danceability.c_str());
-        newSong.danceability = _danceability;
-        _energy = atof(energy.c_str());
-        newSong.energy = _energy;
-        _loudness = atof(loudness.c_str());
-        newSong.loudness = _loudness;
-        _mode = atof(mode.c_str());
-        newSong.mode = _mode;
-        _speechiness = atof(speechiness.c_str());
-        newSong.speechiness = _speechiness;
-        _acousticness = atof(acousticness.c_str());
-        newSong.acousticness = _acousticness;
-        _valence = atof(valence.c_str());
-        newSong.valence = _valence;
-        _tempo = atof(tempo.c_str());
-        newSong.tempo = _tempo;
-        _duration = atof(duration.c_str());
-        newSong.duration = _duration;
-        _target = atof(target.c_str());
-        newSong.target = _target;
-        _decade = atof(decade.c_str());
-        newSong.decade = _decade;
+        //add the doubles:
+        newSong.danceability = atof(danceability.c_str());
+        newSong.energy = atof(energy.c_str());
+        newSong.loudness = atof(loudness.c_str());
+        newSong.speechiness = atof(speechiness.c_str());
+        newSong.acousticness = atof(acousticness.c_str());
+        newSong.valence = atof(valence.c_str());
+        newSong.tempo = atof(tempo.c_str());
+
+        //add the ints:
+        newSong.mode = stoi(mode);
+        newSong.duration = stoi(duration);
+        newSong.target = stoi(target);
+        newSong.decade = stoi(decade);
 
         //add the new book to the vector
-        newSong.points = 100000000 - count; //debugging for sorts
+        //newSong.points = 100000000 - count; //debugging for sorts
         songList.push_back(newSong);
         count++;
     }
 }
 
-void SongRec::genrePoints(const string& genre, int numPoints) {
+void SongRec::dancePoints(int choice, int numPoints) {
+    //choice must be divided by 10 to match data 
+    double choiceDec = double(choice) / 10;
+    double min = choiceDec - 0.1;
+    double max = choiceDec + 0.1;
+
+    //iterate through songList and allocate max points for +- 0.1 from choice
+    //add 50% of points if +- 0.2 from choice
+    for (Song& song : songList) {
+        if (song.danceability >= min && song.danceability <= max) {
+            song.points += numPoints;
+        }
+        else if (song.danceability >= min - 1 && song.danceability <= max + 1) {
+            song.points += numPoints / 2;
+        }
+    }
+}
+
+void SongRec::energyPoints(int choice, int numPoints) {
 
 }
 
-void SongRec::authorPoints(const string& genre, int numPoints) {
+void SongRec::loudnessPoints(int choice, int numPoints) {
 
 }
 
-void SongRec::numPagesPoints(string numPages, int numPoints) {
+void SongRec::modePoints(string choice, int numPoints) {
 
 }
 
-void SongRec::awardWinningPoints(bool award, int numPoints) {
+void SongRec::acousticPoints(int choice, int numPoints) {
 
 }
 
-void SongRec::publisherPoints(string publisher, int numPoints) {
+void SongRec::valencePoints(int choice, int numPoints) {
 
 }
 
-void SongRec::publishDatePoints(string date, int numPoints) {
+void SongRec::tempoPoints(int choice, int numPoints) {
 
 }
 
+//returns the length of songList
 int SongRec::listLength() {
     return songList.size();
 }
 
+//used mygreatlearning.com as a resource, link below
+//https://www.mygreatlearning.com/blog/merge-sort/#:~:text=Pseudocode%20for%20MergeSort%201%20Declare%20left%20and%20right,we%20will%20call%20merge%20on%20the%202%20subproblems
 void SongRec::mergeSort(int start, int end) {
     if (start < end) {
         int mid = start + (end - start) / 2;
@@ -170,10 +181,59 @@ void SongRec::merge(int start, int mid, int end) {
     }
 }
 
-void SongRec::quickSort() {
+//used as a resource for quick sort, link below
+//https://www.geeksforgeeks.org/cpp-program-for-quicksort/
+int SongRec::quickSortHelp(int start, int end) {
+    //pivot starts as the first element
+    int pivot = songList.at(start).points;
+    int count = 0;
 
+    //find how many songs have points less than the pivot
+    //this will be the starting position of the pivot
+    for (int i = start + 1; i <= end; i++) {
+        if (songList.at(i).points <= pivot) {
+            count++;
+        }
+    }
+
+    //move pivot to the new correct position
+    int pivotIndex = start + count;
+    swap(songList.at(pivotIndex), songList.at(start));
+
+    //move up and down until they cross each other and perform switches
+    int up = start, down = end;
+    while (up < pivotIndex && down > pivotIndex) {
+        //move up until it gets a value <= to the pivot value
+        while(songList.at(up).points <= pivot) {
+            up++;
+        }
+        //move down until it gets a value > the pivot
+        while(songList.at(down).points > pivot) {
+            down--;
+        }
+        //if up and down have not passed each other yet, swap up and down values
+        if (up < pivotIndex && down > pivotIndex) {
+            swap(songList.at(up), songList.at(down));
+            up++;
+            down--;
+        }
+    }
+    return pivotIndex;
 }
 
+void SongRec::quickSort(int start, int end) {
+    if (start >= end) {
+        return;
+    }
+
+    int help = quickSortHelp(start, end);
+    //sort the left side of pivot
+    quickSort(start, help - 1);
+    //sort the right side of pivot
+    quickSort(help + 1, end);
+}
+
+//prints the top 10 song recommendations
 void SongRec::printTopTen() {
 
 }
