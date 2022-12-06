@@ -1,9 +1,9 @@
 //
-// Created by Jessica Halvorsen on 11/29/22.
+// Created by Jessica Halvorsen, Maggie Thompson, and Robert Noble on 12/01/22.
 //
 
-#ifndef PROJECT_3_BOOKREC_H
-#define PROJECT_3_BOOKREC_H
+#ifndef PROJECT_3_SONGREC_H
+#define PROJECT_3_SONGREC_H
 #include <string>
 #include <vector>
 #include <fstream>
@@ -15,25 +15,29 @@ class SongRec {
 private:
     struct Song {
         string track, artist, uri;
-        double danceability, energy, loudness, mode, speechiness, acousticness;
-        double valence, tempo, duration, target, decade;
+        double danceability, energy, loudness, speechiness, acousticness;
+        double valence, tempo;
+        int mode, duration, target, decade;
         int points = 0;
     };
     vector<Song> songList;
 public:
     void readCSV(const string& filename);
-    void genrePoints(const string& genre, int numPoints);
-    void authorPoints(const string& genre, int numPoints);
-    void numPagesPoints(string numPages, int numPoints);
-    void awardWinningPoints(bool award, int numPoints);
-    void publisherPoints(string publisher, int numPoints);
-    void publishDatePoints(string date, int numPoints);
+    void dancePoints(int choice, int numPoints);
+    void energyPoints(int choice, int numPoints);
+    void loudnessPoints(int choice, int numPoints);
+    void modePoints(string choice, int numPoints);
+    void acousticPoints(int choice, int numPoints);
+    void valencePoints(int choice, int numPoints);
+    void tempoPoints(int choice, int numPoints);
     int listLength();
     void mergeSort(int start, int end);
     void merge(int start, int mid, int end);
-    void quickSort();
+    int quickSortHelp(int start, int end);
+    void quickSort(int start, int end);
     void printTopTen();
 };
 
 
 #endif //PROJECT_3_SONGREC_H
+
