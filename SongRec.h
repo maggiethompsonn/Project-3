@@ -25,7 +25,6 @@ public:
     void readCSV(const string& filename);
     void dancePoints(int choice, int numPoints);
     void energyPoints(int choice, int numPoints);
-    void loudnessPoints(int choice, int numPoints);
     void modePoints(string choice, int numPoints);
     void acousticPoints(int choice, int numPoints);
     void valencePoints(int choice, int numPoints);
