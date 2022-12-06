@@ -4,6 +4,9 @@
 //
 #include <iostream>
 #include <string>
+#include <algorithm>
+#include <chrono>
+#include <vector>
 #include "SongRec.h"
 using namespace std;
 
@@ -77,8 +80,13 @@ int main() {
     }
 
     //5. return a list of the top 10 books for the user
+    auto start = high_resolution_clock::now();
     songs.mergeSort(0, songs.listLength() - 1);
     songs.printTopTen();
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    
+    cout << "Time taken by function: " << duration.count() << " microseconds" << endl;
 
     return 0;
 }
