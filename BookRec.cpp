@@ -31,20 +31,20 @@ void SongRec::readCSV(const string& filename) {
                 valence, tempo, duration, target, decade;
 
         //read in each column as a string
-        getline(ss, track, ',');
-        getline(ss, artist, ',');
-        getline(ss, uri, ',');
-        getline(ss, danceability, ',');
-        getline(ss, energy, ',');
-        getline(ss, loudness, ',');
-        getline(ss, mode, ',');
-        getline(ss, speechiness, ',');
-        getline(ss, acousticness, ',');
-        getline(ss, valence, ',');
-        getline(ss, tempo, ',');
-        getline(ss, duration, ',');
-        getline(ss, target, ',');
-        getline(ss, decade, ',');
+        getline(ss, track, '|');
+        getline(ss, artist, '|');
+        getline(ss, uri, '|');
+        getline(ss, danceability, '|');
+        getline(ss, energy, '|');
+        getline(ss, loudness, '|');
+        getline(ss, mode, '|');
+        getline(ss, speechiness, '|');
+        getline(ss, acousticness, '|');
+        getline(ss, valence, '|');
+        getline(ss, tempo, '|');
+        getline(ss, duration, '|');
+        getline(ss, target, '|');
+        getline(ss, decade, '|');
 
         //convert string types to their expected type and add to book struct
         Song newSong;
