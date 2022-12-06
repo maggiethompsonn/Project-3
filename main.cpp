@@ -9,10 +9,11 @@ using namespace std;
 
 int main() {
 
+    
     //1. read in csv file and create book struct
     SongRec songs;
-    songs.readCSV("songs_good.csv");
-    //songs.mergeSort(0, songs.listLength() - 1);
+    songs.readCSV("songs.csv");
+
 
     //2. welcome the user to the song recommender
     cout << "Welcome to the Song Recommender!" << endl;
@@ -21,8 +22,8 @@ int main() {
     // 3. ask the user to rank which criteria are most important to them
     //    danceability, energy, loudness, mode, acousticness, valence, tempo
 
-    cout << "Which factors are most important to you? (rank in order ex: 2314576)" << endl;
-    cout << "1. Danceability \n2. Energy \n3. Loudness \n4. Mode \n5. Acousticness \n6. Valence \n 7. Tempo";
+    cout << "Which factors are most important to you? (rank in order ex: 231456)" << endl;
+    cout << "1. Danceability \n2. Energy \n3. Mode \n4. Acousticness \n5. Valence \n6. Tempo\n";
 
 
     //4. based on their ranking, ask for their choices for each option
@@ -31,11 +32,11 @@ int main() {
     //  start at 30, decrement by 5 with each iteration through loop
 
     string factorsRank, mode;
-    int danceRank, energyRank, loudnessRank, acousticRank, valenceRank, tempoRank;
+    int danceRank, energyRank, acousticRank, valenceRank, tempoRank;
     int numPoints = 30;
 
     cin >> factorsRank;
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 6; i++) {
         if (factorsRank[i] == '1') {
             cout << "On a scale of 1-10, how much would you like to be able to dance to your songs? (1-no dancing, 10-lots of dancing)" << endl;
             cin >> danceRank;
@@ -47,26 +48,21 @@ int main() {
             songs.energyPoints(energyRank, numPoints);
         }
         if (factorsRank[i] == '3') {
-            cout << "How loud would you like your songs to be on a scale of 1-10? (Ex: 1-quiet, 10-very loud)" << endl;
-            cin >> loudnessRank;
-            songs.loudnessPoints(loudnessRank, numPoints);
-        }
-        if (factorsRank[i] == '4') {
             cout << "Would you like your songs to be in the major or minor?" << endl;
             cin >> mode;
             songs.modePoints(mode, numPoints);
         }
-        if (factorsRank[i] == '5') {
+        if (factorsRank[i] == '4') {
             cout << "How acoustic would you like your songs to be on a scale of 1-10?" << endl;
             cin >> acousticRank;
             songs.acousticPoints(acousticRank, numPoints);
         }
-        if (factorsRank[i] == '6') {
+        if (factorsRank[i] == '5') {
             cout << "How positive would you like your songs to be on a scale of 1-10? (Ex: 1-sad, depressed, angry; 10-happy, cheerful, euphoric)" << endl;
             cin >> valenceRank;
             songs.valencePoints(valenceRank, numPoints);
         }
-        if (factorsRank[i] == '7') {
+        if (factorsRank[i] == '6') {
             cout << "How fast would you like the tempo of your songs to be?\n"
                     "1. 0-70 BPM\n"
                     "2. 70-100 BPM\n"
@@ -81,9 +77,8 @@ int main() {
     }
 
     //5. return a list of the top 10 books for the user
-
-
-
+    songs.mergeSort(0, songs.listLength() - 1);
+    songs.printTopTen();
 
     return 0;
 }
